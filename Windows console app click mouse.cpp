@@ -56,6 +56,8 @@ int read_digit() {
 	cin.clear();
 	cin.ignore();
 	cin.sync();
+	if (data.length() <= 0)
+		return 0;
 	for(int x=0;x<data.length();x++)
 		if (!((data[x] == '0') || (data[x] == '1') || (data[x] == '2') || (data[x] == '3') || (data[x] == '4') || (data[x] == '5')
 			|| (data[x] == '6') || (data[x] == '7') || (data[x] == '8') || (data[x] == '9')))
@@ -77,7 +79,7 @@ void klikacz() {
 	}
 	czas = czas;
 
-	cout << "Aby zakonczyc wprowadz inna wartosc niz liczba\n\n";
+	cout << "\n-Aby zakonczyc wprowadz inna wartosc niz liczba\n\n";
 
 	cout << "Ile razy kliknac: ";
 
