@@ -1,4 +1,4 @@
-int read_digit(); // funkcja wczytuje liczbe jezeli dane sa niepoprawne zwraca zero
+int read_digit(); // funkcja wczytuje liczbe jezeli dane sa niepoprawne zwraca zero include<string>
 
 int read_digit() {
 	string data;
