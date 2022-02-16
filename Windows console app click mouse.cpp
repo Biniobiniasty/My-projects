@@ -4,14 +4,39 @@
 
 using namespace std;
 
+struct okno {
+	HWND uchwyt_okna;
+	string nazwa_okna;
+
+	void wprowadz_nazwe(string data) {
+		
+		string result = data;
+
+		if (data.length() > 32)
+			result = data.substr(0, 32);
+		if (data.length() < 32)
+		{
+			for (int x = data.length();x < 32;x++)
+				result.append(" ");
+		}
+
+		this->nazwa_okna = result;
+	}
+};
+
 void help();
 void klikacz();
+void klikacz_gwiazda();
+void set_okno();
 
 void click(); // klika w aktualne polozenie myszki
 int read_digit(); // Wczytuje liczbe z ekranu jezeli dane sa niepoprawne zwraca 0
 
+okno okienko;
+
 int main() {
 
+	okienko.wprowadz_nazwe("Brak okna - ustaw - kommand okno");
 	cout << endl << endl << "          PROGRAM DO KLIKANIA MYSZKA NA ROZNE SPOSOBY I MIEJSCA" << endl << endl;
 
 	help();
@@ -25,7 +50,7 @@ int main() {
 		cin.ignore();
 		cin.clear();
 		cin.sync();
-		
+
 		if (komenda == "exit")
 			break;
 		else if (komenda == "help")
@@ -34,6 +59,10 @@ int main() {
 			system("cls");
 		else if (komenda == "klikacz")
 			klikacz();
+		else if (komenda == "klikacz*")
+			klikacz_gwiazda();
+		else if (komenda == "okno")
+			set_okno();
 		else
 			cout << "Nie znana komenda: " << komenda << endl;
 	}
@@ -42,12 +71,19 @@ int main() {
 }
 
 void help() {
-	cout << "-------------------------------------\n";
-	cout << "help    - wyswietla pomoc" << endl;
-	cout << "exit    - konczy program" << endl;
-	cout << "clear   - czysci ekran" << endl;
-	cout << "klikacz - modul klikania mysza" << endl;
-	cout << "-------------------------------------\n";
+
+	cout << "*--------------------------------------------*\n";
+	cout << "| help    - wyswietla pomoc                  |" << endl;
+	cout << "| exit    - konczy program                   |" << endl;
+	cout << "| clear   - czysci ekran                     |" << endl;
+	cout << "|                                            |" << endl;
+	cout << "|      [ " << okienko.nazwa_okna << " ]  |" << endl;
+	cout << "|                                            |" << endl;
+	cout << "|   ***[MODULY]***                           |" << endl;
+	cout << "|                                            |" << endl;
+	cout << "| klikacz  - modul klikania mysza            |" << endl;
+	cout << "| klikacz* - modul klik i trzymaj            |" << endl;
+	cout << "*--------------------------------------------*\n";
 }
 
 int read_digit() {
@@ -58,7 +94,7 @@ int read_digit() {
 	cin.sync();
 	if (data.length() <= 0)
 		return 0;
-	for(int x=0;x<data.length();x++)
+	for (int x = 0;x < data.length();x++)
 		if (!((data[x] == '0') || (data[x] == '1') || (data[x] == '2') || (data[x] == '3') || (data[x] == '4') || (data[x] == '5')
 			|| (data[x] == '6') || (data[x] == '7') || (data[x] == '8') || (data[x] == '9')))
 			return 0;
@@ -66,19 +102,63 @@ int read_digit() {
 	return result;
 }
 
-void klikacz() {
-	cout << endl << "Modul klika z ustalonym intervalem w aktualne polozenie myszki. Robi to tyle razy ile zadeklarujemy" << endl << endl;
+void klikacz_gwiazda() {
+	cout << endl << "Modul klika w aktualna pozycje myszki i puszcz po ustalonym czasie." << endl << endl;
 
-	cout << "Co ile klikniecie (milisekundy 200-10 000): ";
+	cout << "Co ile klikniecie (milisekundy 50 - 10 000): ";
 	int czas = read_digit();
 
-	if ((czas < 200) || (czas > 10000))
+	if ((czas < 50) || (czas > 10000))
 	{
 		cout << "Nie poporawna wartosc\n";
 		return;
 	}
-	czas = czas;
 
+	int odstep = 0;
+
+	cout << "Ile czasu trzmac przycisniete (milisekundy 50 - 10 000): ";
+	cin >> odstep;
+
+	if ((odstep < 50) || (odstep > 10000))
+	{
+		cout << "Nie poprawna wartosc \n";
+		return;
+	}
+
+	cout << "\n-Aby zakonczyc wprowadz inna wartosc niz liczba\n\n";
+
+	cout << "Ile razy kliknac: ";
+
+	int licznik = 1;
+
+	while (licznik = read_digit())
+	{
+		for (int x = 1;x <= licznik;x++)
+		{
+			mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+			Sleep(odstep);
+			mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+			cout << "||" << x << "/" << licznik << char(13);
+			Sleep(czas);
+		}
+		cout << "Ile razy kliknac: ";
+	}
+	cout << "[KONIEC MODULU KLIKACZ*]" << endl << endl;
+
+}
+
+void klikacz() {
+	cout << endl << "Modul klika z ustalonym intervalem w aktualne polozenie myszki. Robi to tyle razy ile zadeklarujemy" << endl << endl;
+
+	cout << "Co ile klikniecie (milisekundy 50 - 10 000): ";
+	int czas = read_digit();
+
+	if ((czas < 50) || (czas > 10000))
+	{
+		cout << "Nie poporawna wartosc\n";
+		return;
+	}
+	
 	cout << "\n-Aby zakonczyc wprowadz inna wartosc niz liczba\n\n";
 
 	cout << "Ile razy kliknac: ";
@@ -104,6 +184,17 @@ void click() {
 	mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
 }
 
+void set_okno() {
+	string nazwa;
+	cout << "Wprowadz jakas fraze ktora znajduje sie w tytule okna: ";
+	cin >> nazwa;
 
+	okienko.wprowadz_nazwe(nazwa);
+	/*
+	
+		Tu kod ktory wyszuka okno z wpisana fraza i zwruci do struktury okienko HWND i pelna nazwe
+	
+	*/
 
+}
 
