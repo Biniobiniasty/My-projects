@@ -9,7 +9,7 @@ struct okno {
 	string nazwa_okna;
 
 	void wprowadz_nazwe(string data) {
-		
+
 		string result = data;
 
 		if (data.length() > 32)
@@ -28,6 +28,7 @@ void help();
 void klikacz();
 void klikacz_gwiazda();
 void set_okno();
+void click_blick();
 
 void click(); // klika w aktualne polozenie myszki
 int read_digit(); // Wczytuje liczbe z ekranu jezeli dane sa niepoprawne zwraca 0
@@ -63,6 +64,8 @@ int main() {
 			klikacz_gwiazda();
 		else if (komenda == "okno")
 			set_okno();
+		else if (komenda == "click_blick")
+			click_blick();
 		else
 			cout << "Nie znana komenda: " << komenda << endl;
 	}
@@ -81,8 +84,9 @@ void help() {
 	cout << "|                                            |" << endl;
 	cout << "|   ***[MODULY]***                           |" << endl;
 	cout << "|                                            |" << endl;
-	cout << "| klikacz  - modul klikania mysza            |" << endl;
-	cout << "| klikacz* - modul klik i trzymaj            |" << endl;
+	cout << "| klikacz      - modul klikania mysza        |" << endl;
+	cout << "| klikacz*     - modul klik i trzymaj        |" << endl;
+	cout << "| click_blick  - klikanie w ustalone miejsce |" << endl;
 	cout << "*--------------------------------------------*\n";
 }
 
@@ -102,6 +106,9 @@ int read_digit() {
 	return result;
 }
 
+void click_blick() {
+
+}
 void klikacz_gwiazda() {
 	cout << endl << "Modul klika w aktualna pozycje myszki i puszcz po ustalonym czasie." << endl << endl;
 
@@ -158,7 +165,7 @@ void klikacz() {
 		cout << "Nie poporawna wartosc\n";
 		return;
 	}
-	
+
 	cout << "\n-Aby zakonczyc wprowadz inna wartosc niz liczba\n\n";
 
 	cout << "Ile razy kliknac: ";
@@ -186,15 +193,47 @@ void click() {
 
 void set_okno() {
 	string nazwa;
-	cout << "Wprowadz jakas fraze ktora znajduje sie w tytule okna: ";
+	cout << "Uwaga na duze i male literki\n";
+	cout << "Wprowadz nazwe okna lub fraze nazwy\n";
+	cout << "Max(1000 znakow): ";
 	cin >> nazwa;
 
-	okienko.wprowadz_nazwe(nazwa);
-	/*
 	
-		Tu kod ktory wyszuka okno z wpisana fraza i zwruci do struktury okienko HWND i pelna nazwe
-	
-	*/
+	for (int x = 0;x <= 100000000;x++)
+		if (IsWindow((HWND)x))
+		{
 
+			char buffor[1000];
+			GetWindowTextA((HWND)x, &buffor[0], 1000);
+			
+			for(int y=0;y<=1000-nazwa.length();y++)
+				if (buffor[y] == nazwa[0])
+				{
+					int licznik = 0;
+					bool czy_ok = true;
+
+					for (int z = y;z < y + nazwa.length();z++)
+					{
+
+						if (buffor[z] != nazwa[licznik])
+						{
+							czy_ok = false;
+							break;
+						}
+						licznik++;
+					}
+
+					if (czy_ok)
+					{
+						okienko.wprowadz_nazwe(buffor);
+						okienko.uchwyt_okna = (HWND)x;
+						cout << "[SUCCESS]" << endl;
+						cout << "Nazwa okna: \"" << buffor << "\"" << endl;
+						return;
+					}
+				}
+		}
+
+	cout << "Okno z podana fraza nie zostalo odnalezione.\n";
 }
 
