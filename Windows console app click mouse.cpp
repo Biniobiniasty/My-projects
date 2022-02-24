@@ -108,6 +108,78 @@ int read_digit() {
 
 void click_blick() {
 
+	cout << "Modul click_blick klika w wybrane miejsce w oknie bez uzywania myszki. \n\n";
+
+	if (!(IsWindow(okienko.uchwyt_okna)))
+	{
+		cout << "Modul wymaga zdefiniowania okna \n wydaj polecenie \'okno\'\n";
+		return;
+	}
+
+	cout << "Ustaw kursor w wybranym oknie na pozycje ktora ma byc klikana [enter]...";
+	getchar();
+
+	RECT prostokat_okna;
+	POINT poz;
+
+	GetWindowRect(okienko.uchwyt_okna, &prostokat_okna);
+	GetCursorPos(&poz);
+
+	int poz_x, poz_y;
+
+	poz_x = poz.x - prostokat_okna.left;
+	poz_y = poz.y - prostokat_okna.top;
+
+	cout << "Odczytana pozycja do klikania to [" << poz_x << "; " << poz_y << "]\n";
+	cout << "[enter] - narysuje okrag w miejscu klikania \n Okrag czasem moze byc niewidoczny jezeli okno jest caly czas odswiezane \n";
+	getchar();
+
+	HDC hdcOkno;
+	hdcOkno = GetDC(okienko.uchwyt_okna);
+
+	for (int x = 0;x < 100;x++)
+	{
+		HBRUSH pedzel;
+		pedzel = CreateSolidBrush(0x00FF00);
+
+		Ellipse(hdcOkno, poz_x + 10, poz_y + 10, poz_x - 10, poz_y-10);
+		Sleep(10);
+	}
+
+	ReleaseDC(okienko.uchwyt_okna, hdcOkno);
+
+	cout << "Co ile klikniecie (milisekundy 50 - 10 000): ";
+	int czas = read_digit();
+
+	if ((czas < 50) || (czas > 10000))
+	{
+		cout << "Nie poporawna wartosc\n";
+		return;
+	}
+
+	cout << "Aby zakonczyc wpisz cokolwiek oprucz liczby\n";
+	cout << "Ile razy kliknac: ";
+
+	int licznik = 1;
+
+	while (licznik = read_digit())
+	{
+		for (int x = 1;x <= licznik;x++)
+		{
+
+
+			// Tu naprawic kod bo nie dziala klikanie 
+
+			int pozycja = LOWORD(poz_x) + HIWORD(poz_y);
+			SendMessage(okienko.uchwyt_okna, WM_LBUTTONDOWN, NULL, pozycja);
+			SendMessage(okienko.uchwyt_okna, WM_LBUTTONUP, NULL, pozycja);
+			cout << "||" << x << "/" << licznik << char(13);
+			Sleep(czas);
+		}
+		cout << "Ile razy kliknac: ";
+	}
+	cout << "[KONIEC MODULU CLICK_BLICK]" << endl << endl;
+
 }
 void klikacz_gwiazda() {
 	cout << endl << "Modul klika w aktualna pozycje myszki i puszcz po ustalonym czasie." << endl << endl;
@@ -177,7 +249,7 @@ void klikacz() {
 		for (int x = 1;x <= licznik;x++)
 		{
 			click();
-			cout << "||" << x << "/" << licznik << char(13);
+			cout << "     " << x << "/" << licznik << char(13);
 			Sleep(czas);
 		}
 		cout << "Ile razy kliknac: ";
@@ -198,15 +270,15 @@ void set_okno() {
 	cout << "Max(1000 znakow): ";
 	cin >> nazwa;
 
-	
+
 	for (int x = 0;x <= 100000000;x++)
 		if (IsWindow((HWND)x))
 		{
 
 			char buffor[1000];
 			GetWindowTextA((HWND)x, &buffor[0], 1000);
-			
-			for(int y=0;y<=1000-nazwa.length();y++)
+
+			for (int y = 0;y <= 1000 - nazwa.length();y++)
 				if (buffor[y] == nazwa[0])
 				{
 					int licznik = 0;
@@ -236,4 +308,3 @@ void set_okno() {
 
 	cout << "Okno z podana fraza nie zostalo odnalezione.\n";
 }
-
