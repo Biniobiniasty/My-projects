@@ -1,0 +1,1 @@
+print("Zglasza sie gobuster")
