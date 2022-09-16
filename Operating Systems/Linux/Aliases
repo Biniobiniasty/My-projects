@@ -5,3 +5,4 @@ alias a="vim prog.asm;clear;nasm -f elf64 -o prog.o prog.asm;ld -o prog prog.o;.
 alias e="vim prog.erl;clear;erlc prog.erl;erl -noshell -s prog main -s init stop"
 alias j="vim prog.java;clear;javac prog.java;java prog"
 alias o="rm -rf *"
+alias l="clear;ls -lash"
