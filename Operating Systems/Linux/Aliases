@@ -7,3 +7,11 @@ alias j="vim prog.java;clear;javac prog.java;java prog"
 alias o="rm -rf *"
 alias l="clear;ls -lash"
 alias r="vim script.rb;clear;ruby script.rb"
+alias offsec="nohup openvpn /home/kali/universal.ovpn &"
+alias htb="nohup openvpn /home/kali/HTB.ovpn &"
+alias thm="nohup openvpn /home/kali/Binio.ovpn &"
+alias s='clear;tree /root'
+alias backup='zip -r /opt/backup.zip $(ls /root | egrep "^[^.]" | xargs -I dupa echo "/root/"dupa)'
+export ALIEN_THEME="red"
+source /opt/alien/alien.zsh
+wmctrl -r ':ACTIVE:' -b toggle,fullscreen
