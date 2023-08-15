@@ -12,6 +12,10 @@ alias htb="nohup openvpn /home/kali/HTB.ovpn &"
 alias thm="nohup openvpn /home/kali/Binio.ovpn &"
 alias s='clear;tree /root'
 alias backup='zip -r /opt/backup.zip $(ls /root | egrep "^[^.]" | xargs -I dupa echo "/root/"dupa)'
-export ALIEN_THEME="red"
+alias ggobuster='dirsearch --url http://$IP/ && gobuster dir -u http://$IP/ -w /usr/share/seclists/Discovery/Web-Content/big.txt -t 50 -x php,txt,zip,doc,tar,gz,rar,jsp,pdf | tee 1-gobusterBig-extension'
+alias nnmap='nmap $IP && nmap $IP -sV -sC -p- | tee 1-nmap'
+export ALIEN_THEME="blue"
 source /opt/alien/alien.zsh
+export ext='pdf,xls,tar,gz,rar,zip,doc,txt,yaml,yml,xls,bak,back,php,htm,html,asp,aspx'
+alias java2='/usr/java/jre1.8.0_371/bin/java'
 wmctrl -r ':ACTIVE:' -b toggle,fullscreen
