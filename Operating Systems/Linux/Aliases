@@ -16,6 +16,6 @@ alias ggobuster='dirsearch --url http://$IP/ && gobuster dir -u http://$IP/ -w /
 alias nnmap='nmap $IP && nmap $IP -sV -sC -p- | tee 1-nmap'
 export ALIEN_THEME="blue"
 source /opt/alien/alien.zsh
-export ext='pdf,xls,tar,gz,rar,zip,doc,txt,yaml,yml,xls,bak,back,php,htm,html,asp,aspx'
+export ext='pdf,xls,tar,gz,rar,zip,doc,txt,yaml,yml,xls,bak,back,php,htm,html,asp,aspx,jsp'
 alias java2='/usr/java/jre1.8.0_371/bin/java'
 wmctrl -r ':ACTIVE:' -b toggle,fullscreen
